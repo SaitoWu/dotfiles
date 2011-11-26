@@ -1,6 +1,7 @@
 [user]
-	name = Saito
+  name = Saito
   email = saitowu@gmail.com
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
@@ -20,6 +21,7 @@
   ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
   pom = push origin master
   up = pull --rebase
+
 [color "status"]
   added = yellow
   changed = green
