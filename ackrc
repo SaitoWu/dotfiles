@@ -1,0 +1,9 @@
+--smart-case
+--follow
+
+# markdown
+--type-set=plaintext=.md,.mdown,.markdown,.mkdn,.textile,.rst,.txt
+# template
+--type-set=template=.slim,.haml
+# stylesheet
+--type-set=stylesheet=sass,.scss,.css,.less

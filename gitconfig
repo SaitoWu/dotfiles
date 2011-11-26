@@ -1,0 +1,26 @@
+[user]
+	name = Saito
+  email = saitowu@gmail.com
+[branch "master"]
+  remote = origin
+  merge = refs/heads/master
+
+[color]
+  pager = true
+  ui = true
+  status = auto
+  branch = auto
+
+[alias]
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
+  pom = push origin master
+  up = pull --rebase
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan
