@@ -1,0 +1,4 @@
+# utf-8 I/O
+set input-meta on
+set output-meta on
+set convert-meta off
