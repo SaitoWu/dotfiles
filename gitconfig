@@ -3,7 +3,7 @@
   email = saitowu@gmail.com
 
 [github]
-	user = SaitoWu
+  user = SaitoWu
 
 [branch "master"]
   remote = origin
