@@ -3,7 +3,7 @@
   email = saitowu@gmail.com
 
 [github]
-  user = SaitoWu
+	user = SaitoWu
 
 [branch "master"]
   remote = origin
@@ -23,7 +23,7 @@
   df = diff
   ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
   pom = push origin master
-  up = pull origin master --rebase
+  up = pull --rebase
   merge = merge --no-ff
 [color "status"]
   added = yellow
