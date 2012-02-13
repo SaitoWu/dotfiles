@@ -25,6 +25,7 @@
   pom = push origin master
   up = pull --rebase
   merge = merge --no-ff
+  clean = clean -f -d
 [color "status"]
   added = yellow
   changed = green
