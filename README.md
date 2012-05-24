@@ -1,8 +1,16 @@
-### useful dotfiles
+### The missing dotfiles
 
-    bootstrap by your self.
+    dotfiles for all
 
-### others handy tools
+### Install
+
+    git clone git://github.com/SaitoWu/dotfiles.git ~/.dotfiles
+
+    cd ~/.dotfiles
+
+    rake install
+
+### Others handy tools
 
     homebrew
     git://github.com/mxcl/homebrew.git
