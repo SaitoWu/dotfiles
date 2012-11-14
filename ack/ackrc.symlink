@@ -1,9 +1,16 @@
 --smart-case
 --follow
 
-# markdown
---type-set=plaintext=.md,.mdown,.markdown,.mkdn,.textile,.rst,.txt
-# template
---type-set=template=.slim,.haml
-# stylesheet
---type-set=stylesheet=sass,.scss,.css,.less
+# Search
+--type-set=coffee=.coffee
+--type-set=cucumber=.feature
+--type-set=haml=.haml
+--type-set=slim=.slim
+--type-set=sass=.sass,.scss
+--type-set=less=.less
+
+# Don't search
+--ignore-dir=log
+--ignore-dir=tags
+--ignore-dir=tmp
+--ignore-dir=public
