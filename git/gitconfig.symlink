@@ -20,7 +20,7 @@
   ci = commit
   br = branch
   co = checkout
-  df = diff
+  df = diff --patience
   ll = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%Creset' --abbrev-commit --date=relative
   pom = push origin master
   up = pull --rebase
