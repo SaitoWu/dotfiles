@@ -1,2 +1,2 @@
-alias r='rvm use 1.9.3'
+alias r='rvm use 2.0 --default'
 alias i="pry"
