@@ -1,1 +1,1 @@
-export EDITOR="$ZSH/bin/subl -w"
+export EDITOR="vim"
