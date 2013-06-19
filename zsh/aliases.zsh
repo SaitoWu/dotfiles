@@ -1,5 +1,6 @@
 alias git='hub'
 alias wiki='e ~/Dropbox/Wikis'
+alias cask="brew cask"
 alias p='ps aux | grep'
 alias rr="rackup -b \"run Rack::Directory.new '.'\""
 alias reload='. ~/.zshrc'

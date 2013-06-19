@@ -1,3 +1,3 @@
-alias mc="mvn clean install -Dmaven.test.skip"
-alias mp="mvn clean package -Dmaven.test.skip"
-alias mr="mvn clean package -Dmaven.test.skip && jetty run"
+alias mc="mvn clean install -Dmaven.test.skip -U"
+alias mp="mvn clean package -Dmaven.test.skip -U"
+alias mr="mvn clean package -Dmaven.test.skip -U && jetty run"
