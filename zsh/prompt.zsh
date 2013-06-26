@@ -1,70 +1,90 @@
-# Pure
-# by Sindre Sorhus
-# https://github.com/sindresorhus/pure
-# MIT License
+autoload colors && colors
+# cheers, @ehrenmurdick
+# http://github.com/ehrenmurdick/config/blob/master/zsh/prompt.zsh
 
+if (( $+commands[git] ))
+then
+  git="$commands[git]"
+else
+  git="/usr/bin/git"
+fi
 
-# Change this to your own username
-DEFAULT_USERNAME='Saito'
+git_branch() {
+  echo $($git symbolic-ref HEAD 2>/dev/null | awk -F/ {'print $NF'})
+}
 
-# Threshold (sec) for showing cmd exec time
-CMD_MAX_EXEC_TIME=5
-
-
-# For my own and others sanity
-# git:
-# %b => current branch
-# %a => current action (rebase/merge)
-# prompt:
-# %F => color dict
-# %f => reset color
-# %~ => current path
-# %* => time
-# %n => username
-# %m => shortname host
-# %(?..) => prompt conditional - %(condition.true.false)
-
-autoload -Uz vcs_info
-zstyle ':vcs_info:*' enable git # You can add hg too if needed: `git hg`
-zstyle ':vcs_info:git*' formats ' %b'
-zstyle ':vcs_info:git*' actionformats ' %b|%a'
-
-# enable prompt substitution
-setopt PROMPT_SUBST
-
-# Only show username if not default
-# [ $USER != $DEFAULT_USERNAME ] && local username='%n@%m '
-local username=$DEFAULT_USERNAME
-
-# Fastest possible way to check if repo is dirty
 git_dirty() {
-  # check if we're in a git repo
-  command git rev-parse --is-inside-work-tree &>/dev/null || return
-  # check if it's dirty
-  command git diff --quiet --ignore-submodules HEAD &>/dev/null; [ $? -eq 1 ] && echo '*'
+  st=$($git status 2>/dev/null | tail -n 1)
+  if [[ $st == "" ]]
+  then
+    echo ""
+  else
+    if [[ "$st" =~ ^nothing ]]
+    then
+      echo "on %{$fg_bold[green]%}$(git_prompt_info)%{$reset_color%}"
+    else
+      echo "on %{$fg_bold[red]%}$(git_prompt_info)%{$reset_color%}"
+    fi
+  fi
 }
 
-# Displays the exec time of the last command if set threshold was exceeded
-cmd_exec_time() {
-  local stop=`date +%s`
-  local start=${cmd_timestamp:-$stop}
-  let local elapsed=$stop-$start
-  [ $elapsed -gt $CMD_MAX_EXEC_TIME ] && echo ${elapsed}s
+git_prompt_info () {
+ ref=$($git symbolic-ref HEAD 2>/dev/null) || return
+# echo "(%{\e[0;33m%}${ref#refs/heads/}%{\e[0m%})"
+ echo "${ref#refs/heads/}"
 }
 
-preexec() {
-  cmd_timestamp=`date +%s`
+unpushed () {
+  $git cherry -v @{upstream} 2>/dev/null
+}
+
+need_push () {
+  if [[ $(unpushed) == "" ]]
+  then
+    echo " "
+  else
+    echo " with %{$fg_bold[magenta]%}unpushed%{$reset_color%} "
+  fi
+}
+
+rb_prompt(){
+  if $(which rvm &> /dev/null)
+  then
+    echo "%{$fg_bold[yellow]%}$(rvm current | awk '{print $1}')%{$reset_color%}"
+  else
+    echo ""
+  fi
+}
+
+# This keeps the number of todos always available the right hand side of my
+# command line. I filter it to only count those tagged as "+next", so it's more
+# of a motivation to clear out the list.
+todo(){
+  if (( $+commands[todo.sh] ))
+  then
+    num=$(echo $(todo.sh ls +next | wc -l))
+    let todos=num-2
+    if [ $todos != 0 ]
+    then
+      echo "$todos"
+    else
+      echo ""
+    fi
+  else
+    echo ""
+  fi
+}
+
+directory_name(){
+  echo "%{$fg_bold[cyan]%}%1/%\/%{$reset_color%}"
+}
+
+export PROMPT=$'\n$(rb_prompt) in $(directory_name) $(git_dirty)$(need_push)\n› '
+set_prompt () {
+  export RPROMPT="%{$fg_bold[cyan]%}$(todo)%{$reset_color%}"
 }
 
 precmd() {
-  vcs_info
-  # Add `%*` to display the time
-  print -P '\n%F{blue}%~%F{236}$vcs_info_msg_0_`git_dirty` %F{yellow}`cmd_exec_time`%f'
-  # Reset value since `preexec` isn't always triggered
-  unset cmd_timestamp
+  title "zsh" "%m" "%55<...<%~"
+  set_prompt
 }
-
-# Prompt turns red if the previous command didn't exit with 0
-PROMPT='%(?.%F{magenta}.%F{red})❯%f '
-# Can be disabled:
-# PROMPT='%F{magenta}❯%f '
