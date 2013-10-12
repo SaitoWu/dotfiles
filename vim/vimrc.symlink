@@ -27,6 +27,7 @@ set directory-=.                                             " don't store swapf
 set encoding=utf-8
 set expandtab                                                " expand tabs to spaces
 set ignorecase                                               " case-insensitive search
+set hlsearch                                                 " highlight search result
 set incsearch                                                " search as you type
 set laststatus=2                                             " always show statusline
 set list                                                     " show trailing whitespace
@@ -42,34 +43,118 @@ set tabstop=8                                                " actual tabs occup
 set wildignore=log/**,node_modules/**,target/**,tmp/**,*.rbc
 set wildmenu                                                 " show a navigable menu for tab completion
 set wildmode=longest,list,full
+set timeoutlen=300
 
 " keyboard shortcuts
 let mapleader = ','
+
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
-map <leader>l :Align
-nmap <leader>a :Ack<space>
-nmap <leader>b :CtrlPBuffer<CR>
-nmap <leader>d :NERDTreeToggle<CR>
-nmap <leader>f :NERDTreeFind<CR>
-nmap <leader>t :CtrlP<CR>
-nmap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
-nmap <leader>] :TagbarToggle<CR>
-nmap <leader><space> :call whitespace#strip_trailing()<CR>
-nmap <leader>g :GitGutterToggle<CR>
-nmap <leader>c <Plug>Kwbd
-map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
-" plugin settings
-let g:ctrlp_match_window = 'order:ttb,max:20'
-let g:NERDSpaceDelims=1
-let g:gitgutter_enabled = 0
+" map <leader>l :Align
+" nmap <leader>a :Ack<space>
+" nmap <leader>d :NERDTreeToggle<CR>
+" nmap <leader>f :NERDTreeFind<CR>
+" nmap <leader>t :CtrlP<CR>
+" nmap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
+" nmap <leader>] :TagbarToggle<CR>
+" nmap <leader><space> :call whitespace#strip_trailing()<CR>
+" nmap <leader>g :GitGutterToggle<CR>
+" nmap <leader>c <Plug>Kwbd
+" map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
 
-" always open nerdtree
-autocmd VimEnter * NERDTree
-autocmd BufEnter * NERDTreeMirror
+" upper/lower word
+nmap <leader>u mQviwU`Q
+nmap <leader>l mQviwu`Q
+
+" upper/lower first char of word
+nmap <leader>U mQgewvU`Q
+nmap <leader>L mQgewvu`Q
+
+" Toggle hlsearch with <leader>hs
+nmap <leader>hs :set hlsearch! hlsearch?<CR>
+
+" ack mappings
+if has("gui_macvim") && has("gui_running")
+  map <D-F> :Ack<space>
+else
+  nmap <leader>f :Ack<space>
+end
+
+" NERDTree mappings
+nmap <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
+augroup AuNERDTreeCmd
+autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
+autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
+
+function s:CdIfDirectory(directory)
+  " If the parameter is a directory, cd into it
+  let explicitDirectory = isdirectory(a:directory)
+  let directory = explicitDirectory || empty(a:directory)
+
+  if explicitDirectory
+    exe "cd " . fnameescape(a:directory)
+  endif
+
+  " Allows reading from stdin
+  " ex: git diff | mvim -R -
+  if strlen(a:directory) == 0
+    return
+  endif
+
+  if directory
+    NERDTree
+    wincmd p
+    bd
+  endif
+
+  if explicitDirectory
+    wincmd p
+  endif
+endfunction
+
+function s:UpdateNERDTree(...)
+  " NERDTree utility function
+  let stay = 0
+
+  if(exists("a:1"))
+    let stay = a:1
+  end
+
+  if exists("t:NERDTreeBufName")
+    let nr = bufwinnr(t:NERDTreeBufName)
+    if nr != -1
+      exe nr . "wincmd w"
+      exe substitute(mapcheck("R"), "<CR>", "", "")
+      if !stay
+        wincmd p
+      end
+    endif
+  endif
+endfunction
+
+" ctrlp mappings
+if has("gui_macvim") && has("gui_running")
+  map <D-t> :CtrlP<CR>
+  imap <D-t> <ESC>:CtrlP<CR>
+  map <D-o> :CtrlPBuffer<CR>
+  imap <D-o> <ESC>:CtrlPBuffer<CR>
+endif
+
+" NERDCommenter mappings
+if has("gui_macvim") && has("gui_running")
+  map <D-/> <plug>NERDCommenterToggle<CR>
+  imap <D-/> <ESC><plug>NERDCommenterToggle<CR>
+else
+  map <leader>/ <plug>NERDCommenterToggle<CR>
+endif
+
+" syntastic mappings
+let g:syntastic_enable_signs=1
+let g:syntastic_quiet_warnings=0
+let g:syntastic_auto_loc_list=2
 
 " automatically removing all trailing whitespace
 autocmd BufWritePre * :%s/\s\+$//e

@@ -1,2 +1,6 @@
-color vividchalk
+color hybrid
 set guifont=Monaco:h13
+
+macmenu File.New\ Tab key=<D-S-t>
+macmenu File.Open\.\.\. key=<D-S-o>
+
