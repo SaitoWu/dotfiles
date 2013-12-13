@@ -23,3 +23,10 @@ for config_file ($ZSH/**/completion.zsh) source $config_file
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+### Added by Gvm
+source $HOME/.gvm/scripts/gvm
+
+### Added by Rvm
+PATH=$PATH:$HOME/.rvm/bin
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
