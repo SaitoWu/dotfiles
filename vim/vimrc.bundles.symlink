@@ -18,6 +18,7 @@ Bundle 'tpope/vim-rails'
 Bundle 'rmanalan/jshint.vim'
 Bundle 'scrooloose/syntastic'
 Bundle 'scrooloose/nerdcommenter'
+Bundle 'Valloric/YouCompleteMe'
 
 " tools
 Bundle 'vim-scripts/Align'

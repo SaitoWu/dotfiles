@@ -53,18 +53,6 @@ map <C-j> <C-w>j
 map <C-k> <C-w>k
 map <C-l> <C-w>l
 
-" map <leader>l :Align
-" nmap <leader>a :Ack<space>
-" nmap <leader>d :NERDTreeToggle<CR>
-" nmap <leader>f :NERDTreeFind<CR>
-" nmap <leader>t :CtrlP<CR>
-" nmap <leader>T :CtrlPClearCache<CR>:CtrlP<CR>
-" nmap <leader>] :TagbarToggle<CR>
-" nmap <leader><space> :call whitespace#strip_trailing()<CR>
-" nmap <leader>g :GitGutterToggle<CR>
-" nmap <leader>c <Plug>Kwbd
-" map <silent> <leader>V :source ~/.vimrc<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
-
 " upper/lower word
 nmap <leader>u mQviwU`Q
 nmap <leader>l mQviwu`Q
@@ -85,55 +73,6 @@ end
 
 " NERDTree mappings
 nmap <leader>n :NERDTreeToggle<CR> :NERDTreeMirror<CR>
-augroup AuNERDTreeCmd
-autocmd AuNERDTreeCmd VimEnter * call s:CdIfDirectory(expand("<amatch>"))
-autocmd AuNERDTreeCmd FocusGained * call s:UpdateNERDTree()
-
-function s:CdIfDirectory(directory)
-  " If the parameter is a directory, cd into it
-  let explicitDirectory = isdirectory(a:directory)
-  let directory = explicitDirectory || empty(a:directory)
-
-  if explicitDirectory
-    exe "cd " . fnameescape(a:directory)
-  endif
-
-  " Allows reading from stdin
-  " ex: git diff | mvim -R -
-  if strlen(a:directory) == 0
-    return
-  endif
-
-  if directory
-    NERDTree
-    wincmd p
-    bd
-  endif
-
-  if explicitDirectory
-    wincmd p
-  endif
-endfunction
-
-function s:UpdateNERDTree(...)
-  " NERDTree utility function
-  let stay = 0
-
-  if(exists("a:1"))
-    let stay = a:1
-  end
-
-  if exists("t:NERDTreeBufName")
-    let nr = bufwinnr(t:NERDTreeBufName)
-    if nr != -1
-      exe nr . "wincmd w"
-      exe substitute(mapcheck("R"), "<CR>", "", "")
-      if !stay
-        wincmd p
-      end
-    endif
-  endif
-endfunction
 
 " ctrlp mappings
 if has("gui_macvim") && has("gui_running")
