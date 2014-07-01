@@ -24,9 +24,6 @@ for config_file ($ZSH/**/completion.zsh) source $config_file
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-### Added by Gvm
-source $HOME/.gvm/scripts/gvm
-
 ### Added by Rvm
 PATH=$PATH:$HOME/.rvm/bin
 rvm_silence_path_mismatch_check_flag=1
