@@ -4,18 +4,29 @@ set nocompatible
 " enable syntax highlighting
 syntax enable
 
-" configure Vundle
 filetype on " without this vim emits a zero exit status, later, because of :ft off
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
 
-" install Vundle bundles
+" configure NeoBundle
+if !1 | finish | endif
+
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
+endif
+
+call neobundle#begin(expand('~/.vim/bundle/'))
+
+"Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+
 if filereadable(expand("~/.vimrc.bundles"))
   source ~/.vimrc.bundles
 endif
 
-" ensure ftdetect et al work by including this after the Vundle stuff
+call neobundle#end()
+
+" ensure ftdetect et al work by including this after the NeoBundle stuff
 filetype plugin indent on
 
 set autoindent
@@ -92,7 +103,7 @@ endif
 
 " syntastic mappings
 let g:syntastic_enable_signs=1
-let g:syntastic_quiet_warnings=0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_auto_loc_list=2
 
 " automatically removing all trailing whitespace
