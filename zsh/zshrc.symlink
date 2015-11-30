@@ -24,6 +24,17 @@ for config_file ($ZSH/**/completion.zsh) source $config_file
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
+### Added by boot2docker
+export DOCKER_TLS_VERIFY=1
+export DOCKER_HOST=tcp://192.168.59.103:2376
+export DOCKER_CERT_PATH=/Users/saito/.boot2docker/certs/boot2docker-vm
+
+### Added by Deis
+export DEISCTL_TUNNEL=172.17.8.100
+
+### Added by Kubernetes
+export KUBERNETES_PROVIDER=vagrant
+
 ### Added by Rvm
 PATH=$PATH:$HOME/.rvm/bin
 rvm_silence_path_mismatch_check_flag=1
@@ -32,3 +43,7 @@ rvm_silence_path_mismatch_check_flag=1
 ### Added by Golang
 export GOPATH=$HOME/.golang
 export PATH=$PATH:$GOPATH/bin
+
+### Added by Nim
+export NIMPATH=$HOME/.nimble
+export PATH=$PATH:$NIMPATH/bin
